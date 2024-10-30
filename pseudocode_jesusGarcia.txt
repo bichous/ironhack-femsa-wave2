@@ -113,3 +113,27 @@ public class SystemManager
         _notificationService.NotifyCustomer(order.CustomerEmail, "Your order has been processed.");
     }
 }
+
+
+******************Report*********************
+Analysis and Documentation Report
+Issue 1: Single Responsibility Principle (SRP)
+Violation: The SystemManager class was handling multiple responsibilities.
+Solution: Split responsibilities into separate services (IInventoryService, IPaymentService, IOrderRepository, INotificationService).
+Benefit: Each class now has a single responsibility, making the code easier to maintain and extend.
+Issue 2: Open/Closed Principle (OCP)
+Violation: The processOrder method required modification to add new order types.
+Solution: Use dependency injection to pass different payment services (StandardPaymentService, ExpressPaymentService).
+Benefit: The SystemManager class can now handle new payment types without modification.
+Issue 3: Liskov Substitution Principle (LSP)
+Violation: Not explicitly violated, but the design did not facilitate easy substitution.
+Solution: Introduce IPaymentService interface to allow different payment processing strategies.
+Benefit: Different payment services can be substituted without changing the SystemManager class.
+Issue 4: Interface Segregation Principle (ISP)
+Violation: Not directly violated, but the code could benefit from segregating responsibilities.
+Solution: Define separate interfaces for each responsibility.
+Benefit: Clients only depend on the interfaces they use, reducing unnecessary dependencies.
+Issue 5: Dependency Inversion Principle (DIP)
+Violation: The SystemManager class depended directly on concrete implementations.
+Solution: Depend on abstractions (interfaces) instead of concrete classes.
+Benefit: The system is more flexible and easier to test, as dependencies can be easily mocked or substituted.
