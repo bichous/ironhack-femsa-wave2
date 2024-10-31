@@ -1,0 +1,68 @@
+*Un análisis detallado que identifica vulnerabilidades en el pseudocódigo proporcionado, junto con las soluciones propuestas.
+
+FUNCTION authenticateUser(username, password):
+  QUERY database WITH username AND password
+  IF found RETURN True
+  ELSE RETURN False
+
+
+########################################################################################################################
+########################################################################################################################
+########################################################################################################################
+
+
+Analizando el código visualizo las siguiente vulnerabilidades:
+
+* SQL injection .- se utiliza en la consulta directamente, y debido a ésto se puede inyectar codigo SQL para obtener mas datos o alterarlos.
+como solución seria utilizar queries parametrizadas o prepared statements, asi nos aseguramos que lso valores se tratan como datos
+    evitando ejecuciones de queries maliciosas, una alternativa seria utilizar ORMs
+
+* Inadecuado logueo y monitoreo.- En el pseudocodigo no hay algun registro de logueo, asi es dificil identificar si hay alguna sospecha
+    de posibles ataques, como solución se tiene que implementar el registro de logueos fallidos y exitosos, incluyendo datos para detectar posibles
+    ataques.
+
+* valores sensibles en texto plano (datos no encriptados).- no se ve que haya algun tipo de desencripcion, por lo tanto parece que
+    están en texto plano los datos y esto es muy peligroso porque si alguien vulnera las bases de datos o
+    cualquiera que tenga acceso a estos datos puede tener los datos en claro, como solucion seria hacer el encriptado y desencriptado
+    de datos
+
+
+ import org.springframework.security.crypto.bcrypt.BCrypt;
+ import java.sql.Connection;
+ import java.sql.PreparedStatement;
+ import java.sql.ResultSet;
+ import java.sql.SQLException;
+ import java.util.logging.Logger;
+
+ public class AuthenticationService {
+
+     private static final Logger logger = Logger.getLogger(AuthenticationService.class.getName());
+
+     public boolean authenticateUser(String username, String password, Connection connection) {
+         String query = "SELECT hashed_password, failed_attempts FROM users WHERE username = ?";
+
+         try (PreparedStatement stmt = connection.prepareStatement(query)) {
+             // SQL injection
+             stmt.setString(1, username);
+             ResultSet rs = stmt.executeQuery();
+
+             String passwordStored = rs.getString("password");
+
+
+             // valores sensibles en texto plano
+             boolean isPasswordCorrect = BCrypt.checkpw(password, passwordStored);
+             if (isPasswordCorrect) {
+
+                 return true;
+             } else {
+                    logger.warn("user invalid: " + username );
+                    // se podria implementar un sistema de conteo de reintentos y no permitir mas reintentos de logueo
+                 return false;
+             }
+         } catch (SQLException e) {
+             logger.error("error to get user data login: " + e.getMessage());
+             return false;
+         }
+     }
+
+ }

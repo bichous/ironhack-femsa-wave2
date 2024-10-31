@@ -1,0 +1,89 @@
+Detalles y soluciones propuestos:
+
+Se tiene que realizar los siguiente
+* TLS para Comunicación Segura: Todo el tráfico de la API se realiza mediante HTTPS, asegurando que los datos en tránsito estén protegidos
+* Almacenamiento Seguro de Datos: El cifrado AES-256 se utiliza para proteger datos sensibles en reposo.(puede ser algún otro)
+
+
+a partir del pseudocodigo :
+
+PLAN secureDataCommunication:
+  IMPLEMENT SSL/TLS for all data in transit
+  USE encrypted storage solutions for data at rest
+  ENSURE all data exchanges comply with HTTPS protocols
+
+se podria implementar de esta forma :
+
+
+//Uso de tls para llamadas http
+public class SecureApiClient {
+    private static final Logger logger = Logger.getLogger(SecureApiClient.class.getName());
+    public static void main(String[] args) {
+        try {
+            SSLContext sslContext = SSLContextBuilder.create()
+                .loadTrustMaterial(new TrustSelfSignedStrategy())
+                .build();
+
+            SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(sslContext);
+            try (CloseableHttpClient httpClient = HttpClients.custom()
+                    .setSSLSocketFactory(sslSocketFactory)
+                    .build()) {
+
+                HttpGet request = new HttpGet("https://testt");
+                try (CloseableHttpResponse response = httpClient.execute(request)) {
+                    logger.info("Response Code: " + response.getStatusLine().getStatusCode());
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Error en la comunicación segura: " + e.getMessage());
+        }
+    }
+}
+
+
+//cifrado de datos
+
+public class DataEncryptionUtil {
+
+    private static final String ALGORITHM = "AES-256";
+    private static final Logger logger = Logger.getLogger(SecureApiClient.class.getName());
+
+    public static String encrypt(String data, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        byte[] encryptedBytes = cipher.doFinal(data.getBytes());
+        return Base64.getEncoder().encodeToString(encryptedBytes);
+    }
+
+    public static String decrypt(String encryptedData, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);
+        byte[] decryptedBytes = cipher.doFinal(decodedBytes);
+        return new String(decryptedBytes);
+    }
+
+    public static SecretKey generateKey() throws Exception {
+        KeyGenerator keyGen = KeyGenerator.getInstance(ALGORITHM);
+        keyGen.init(256); // Tamaño de clave para AES
+        return keyGen.generateKey();
+    }
+
+    public static void main(String[] args) {
+        try {
+            SecretKey key = generateKey();
+            String originalData = "contrasenia";
+
+            String encryptedData = encrypt(originalData, key);
+            logger.info("Datos cifrados: " + encryptedData);
+
+            String decryptedData = decrypt(encryptedData, key);
+            logger.info("Datos descifrados: " + decryptedData);
+
+        } catch (Exception e) {
+            logger.error("Error en el cifrado/descifrado: " + e.getMessage());
+        }
+    }
+}
+
+
