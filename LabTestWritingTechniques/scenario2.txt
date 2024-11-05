@@ -1,0 +1,22 @@
+// TEST CASE: Data Processing - Successful Processing
+// Explanation: Verifies that data fetched successfully is processed without errors.
+// Issue: Original test combined success and error scenarios, making it unclear which scenario failed.
+TEST DataProcessing_SuccessfulProcessing
+    DATA data = fetchData()
+    ASSERT_NOT_NULL(data, "Fetched data should not be null")
+    processData(data)
+    ASSERT_TRUE(data.processedSuccessfully, "Data should be processed successfully")
+END TEST
+
+// TEST CASE: Data Processing - Error Handling
+// Explanation: Checks if an error in data processing is properly handled, and expected error message is shown.
+// Issue: Original test did not clearly separate successful processing from error handling.
+TEST DataProcessing_ErrorHandling
+    DATA data = null // Simulate a scenario causing processing error
+    TRY
+        processData(data)
+        FAIL("Expected processing error but none was thrown")
+    CATCH error
+        ASSERT_EQUALS("Data processing error", error.message, "Should handle processing errors")
+    END TRY
+END TEST
