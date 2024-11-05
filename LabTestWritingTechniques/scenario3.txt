@@ -1,0 +1,31 @@
+// TEST CASE: UI Responsiveness - Standard Width (1024px)
+// Explanation: Verifies that the UI adjusts correctly to a standard screen width of 1024 pixels.
+// Issue: Original test only verified one screen size, which limits responsiveness testing.
+TEST UIResponsiveness_StandardWidth
+    UI_COMPONENT uiComponent = setupUIComponent(1024)
+    ASSERT_TRUE(uiComponent.adjustsToScreenSize(1024), "UI should adjust to width of 1024 pixels")
+END TEST
+
+// TEST CASE: UI Responsiveness - Small Width (320px)
+// Explanation: Verifies responsiveness on a small screen width of 320 pixels, simulating mobile device dimensions.
+// Issue: The original test case did not cover responsiveness at smaller widths.
+TEST UIResponsiveness_SmallWidth
+    UI_COMPONENT uiComponent = setupUIComponent(320)
+    ASSERT_TRUE(uiComponent.adjustsToScreenSize(320), "UI should adjust to width of 320 pixels")
+END TEST
+
+// TEST CASE: UI Responsiveness - Large Width (1920px)
+// Explanation: Tests the UI's ability to adjust to a large screen width, suitable for desktop monitors.
+// Issue: Only one screen size (1024px) was tested initially, limiting coverage of larger screen sizes.
+TEST UIResponsiveness_LargeWidth
+    UI_COMPONENT uiComponent = setupUIComponent(1920)
+    ASSERT_TRUE(uiComponent.adjustsToScreenSize(1920), "UI should adjust to width of 1920 pixels")
+END TEST
+
+// TEST CASE: UI Responsiveness - Extreme Width (5000px)
+// Explanation: Checks UI adjustments on an extreme screen width to test boundary cases.
+// Issue: No edge cases for unusual or extreme screen sizes were originally considered.
+TEST UIResponsiveness_ExtremeWidth
+    UI_COMPONENT uiComponent = setupUIComponent(5000)
+    ASSERT_TRUE(uiComponent.adjustsToScreenSize(5000), "UI should adjust to width of 5000 pixels")
+END TEST
