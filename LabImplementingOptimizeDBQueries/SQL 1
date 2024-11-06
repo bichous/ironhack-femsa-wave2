@@ -1,0 +1,16 @@
+Original Query
+SELECT Orders.OrderID, SUM(OrderDetails.Quantity * OrderDetails.UnitPrice) AS TotalPrice
+FROM Orders
+JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID
+WHERE OrderDetails.Quantity > 10
+GROUP BY Orders.OrderID;
+
+// Mejoras sugeridos
+
+Indexación: Añadir índices en OrderDetails.OrderID y OrderDetails.Quantity para agilizar los procesos de unión y filtrado.
+Índice Filtrado: Si es posible, crear un índice filtrado en OrderDetails.Quantity > 10 para mejorar aún más la consulta.
+Reescritura (si es necesario): Si la consulta se ejecuta con frecuencia, considera almacenar en caché los resultados comunes.
+
+Sugiero agregar los siguientes indices:
+CREATE INDEX idx_orderdetails_orderid ON OrderDetails(OrderID);
+CREATE INDEX idx_orderdetails_quantity ON OrderDetails(Quantity);
