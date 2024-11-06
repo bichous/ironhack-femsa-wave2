@@ -1,0 +1,14 @@
+//Query original
+db.posts.find({ status: "active" }, { title: 1, likes: 1 }).sort({ likes: -1 });
+
+Problemas identificados:
+
+Si los campos status o likes no tienen un índice, la consulta puede tardar más en ejecutarse al tener que escanear la colección para aplicar los filtros y la ordenación.
+La ordenación en un campo sin índice (likes en este caso) puede ser costosa en términos computacionales.
+
+Sugerencia de optimización
+
+Indexación: Añadir un índice compuesto en { status: 1, likes: -1 } para acelerar el filtrado y la ordenación.
+Estructura de Documento: Considera integrar las publicaciones populares como subdocumento o usar colecciones separadas para publicaciones activas/inactivas si la recuperación de publicaciones activas es frecuente.
+
+db.posts.createIndex({ status: 1, likes: -1 });
