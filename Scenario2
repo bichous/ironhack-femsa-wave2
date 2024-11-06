@@ -1,0 +1,94 @@
+Detalles y soluciones propuestos:
+
+
+* Características de Seguridad
+    Firma y Cifrado del Token: El token se firma utilizando una clave secreta.
+        Esto permite al servidor validar el token y asegurarse de que no ha sido alterado.
+    Tiempo de Expiración del Token: Cada token tiene un tiempo de vida limitado
+        (por ejemplo, 1 hora). Una vez expirado, el usuario deberá autenticarse nuevamente para obtener un nuevo token.
+    Validación de Credenciales: Antes de generar el token, el sistema valida las credenciales del usuario,
+        asegurando que solo los usuarios autenticados reciben un token.
+    Rotación de Claves: Es recomendable cambiar la clave secreta periódicamente para reducir el riesgo de que un atacante pueda crear tokens válidos.
+
+* Posibles Vulnerabilidades y Mejoras
+    Robo de Tokens: Si un token es interceptado por un atacante, este podría acceder al sistema hasta que el token expire.
+        Para mitigar esto, se recomienda implementar una conexión segura (HTTPS) y limitar los permisos del token.
+    Exposición del Secreto: Si la clave secreta utilizada para firmar los tokens es expuesta,
+        los atacantes podrían generar tokens válidos. La rotación de claves y el uso de una
+        infraestructura de almacenamiento seguro seriá lo mejor.
+    Tokens Expirados: Es importante tener un mecanismo de rechazo de tokens expirados y un sistema
+        de renovación de tokens para mejorar la experiencia del usuario sin comprometer la seguridad.
+
+########################################################################################################################
+########################################################################################################################
+########################################################################################################################
+Un ejemplo en la mejora del pseudocodogo:
+
+DEFINE FUNCTION generateJWT(userCredentials):
+  IF validateCredentials(userCredentials):
+    SET tokenExpiration = currentTime + 3600 // Token expires in one hour
+    RETURN encrypt(userCredentials + tokenExpiration, secretKey)
+  ELSE:
+    RETURN error
+
+seria el siguiente:
+########################################################################################################################
+########################################################################################################################
+########################################################################################################################
+
+public class JWTGenerator {
+
+    private static final Logger logger = Logger.getLogger(JWTGenerator.class.getName());
+    private static final String SECRET_KEY = "claveSecreta123";
+    public static String generarJWT(String userId) {
+
+        long expirationTimeMillis = 3600 * 1000;
+
+        // Generar la fecha de expiración
+        Date expirationDate = new Date(System.currentTimeMillis() + expirationTimeMillis);
+
+        try {
+
+            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+
+            String token = JWT.create()
+                    .withClaim("userID", userId)     // Agregar el ID del usuario como información en el payload
+                    .withExpiresAt(expirationDate)   // Agregar tiempo de expiración
+                    .sign(algorithm);                // Firmar el token con el algoritmo HS256
+
+            return token;
+        } catch (Exception e) {
+            logger.error("Error al generar el token JWT: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static boolean validarJWT(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+            JWT.require(algorithm)
+                    .build()
+                    .verify(token);  // Verificar el token; lanza excepción si es inválido o expirado
+            return true;
+        } catch (TokenExpiredException e) {
+            logger.error("El token ha expirado.");
+            return false;
+        } catch (JWTVerificationException e) {
+            logger.error("Error en la verificación del token JWT: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public static void main(String[] args) {
+        String userId = "test";  // Supongamos que esta es la información de usuario válida
+        String token = generarJWT(userId);
+
+        if (token != null) {
+            logger.info("Token generado: " + token);
+
+            // Validar el token
+            boolean esValido = validarJWT(token);
+            System.out.println("El token es válido: " + esValido);
+        }
+    }
+}
