@@ -1,0 +1,32 @@
+
+//funcion original
+FUNCTION authenticateUser(username, password):
+    QUERY database WITH username AND password
+    IF found RETURN True
+    ELSE RETURN False
+
+Solucion propuesta: Implementar consultas parametrizadas para prevenir inyecciones SQL, realiza el hashing de las contraseñas en lugar de almacenarlas en texto plano
+y limitar los intentos de inicio de sesión para reducir el riesgo de ataques de fuerza bruta.
+
+Pseudocodigo propuesto:
+FUNCTION authenticateUser(username, password):
+    HASHED_PASSWORD = hash(password)
+    PARAMETERIZED_QUERY = "SELECT * FROM users WHERE username = ? AND password = ?"
+    RESULT = executeQuery(PARAMETERIZED_QUERY, username, HASHED_PASSWORD)
+
+    IF RESULT IS NOT EMPTY:
+        RETURN True
+    ELSE:
+        incrementFailedLoginAttempts(username)
+        IF failedAttemptsExceeded(username):
+            lockAccount(username)
+            RETURN "Account locked due to multiple failed attempts"
+        RETURN False
+
+
+Explicación:
+
+hash(password): Hashea la contraseña antes de realizar la comparación.
+PARAMETERIZED_QUERY: Usa una consulta parametrizada para evitar inyección SQL.
+incrementFailedLoginAttempts y failedAttemptsExceeded: Controla los intentos fallidos para evitar ataques de fuerza bruta.
+lockAccount: Bloquea la cuenta si se supera el número de intentos permitidos.
