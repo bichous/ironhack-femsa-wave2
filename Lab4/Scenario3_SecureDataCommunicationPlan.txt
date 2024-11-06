@@ -1,0 +1,25 @@
+Esquema de Protección de Datos
+
+PLAN secureDataCommunication:
+  IMPLEMENT SSL/TLS for all data in transit
+  USE encrypted storage solutions for data at rest
+  ENSURE all data exchanges comply with HTTPS protocols
+
+
+-------------- Estrategia de Protección de Datos --------------
+
+1. Se implementará SSL/TLS en todos los puntos de intercambio de datos, esto permitirá cifrar la información transmitida, evitando que los datos sean interceptados o alterados durante el trayecto.
+    a) Configurar servidores web y de aplicaciones para soportar SSL/TLS.
+    b) Configurar los certificados digitales, utilizando certificados válidos y emitidos por autoridades certificadoras confiables.
+    c) Implementar un ciclo de renovación de certificados para mantener la seguridad de las comunicaciones.
+2. En todos los servicios web y aplicaciones se garantizará que la comunicación se realice exclusivamente a través de HTTPS.
+    a) Redirigir automáticamente todas las solicitudes HTTP a HTTPS
+    b) Forzar que todas las conexiones únicamente se realicen solo por HTTPS usando HSTS.
+    c) Verificar que no existan enlaces rotos o recursos no seguros.
+3. Los datos almacenados serán cifrados para evitar que aún teniendo acceso no autorizado no se pueda leer ni utilizar la información sin una clave de descifrado correspondiente.
+    a) Implementar cifrado en todos los servidores que almacenan información sensible.
+    b) Utilizar algoritmos de cifrado para garantizar la máxima seguridad.
+    c) Asegurar que las claves de cifrado sean gestionadas de manera segura mediante una API (KMS).
+4. Implementar herramientas para monitorear las comunicaciones cifradas y su estado. (Detección de intentos de acceso no autorizado y verificación constante de las configuraciones de SSL/TLS y HTTPS).
+    a) Implementar alertas para detectar actividades sospechosas.
+    b) Realizar auditorías periódicas.
