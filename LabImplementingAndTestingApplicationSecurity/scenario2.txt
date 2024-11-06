@@ -1,0 +1,37 @@
+//Codigo original
+DEFINE FUNCTION generateJWT(userCredentials):
+    IF validateCredentials(userCredentials):
+        SET tokenExpiration = currentTime + 3600 // Token expires in one hour
+        RETURN encrypt(userCredentials + tokenExpiration, secretKey)
+    ELSE:
+        RETURN error
+
+
+Solución Propuesta
+Implementa la firma del JWT en lugar de encriptar el token, almacena la clave secreta de forma segura y añade un mecanismo de refresh tokens para mejorar la seguridad y manejabilidad.
+
+Pseudocodigo Propuesto:
+DEFINE FUNCTION generateJWT(userCredentials):
+    IF validateCredentials(userCredentials):
+        HEADER = { "alg": "HS256", "typ": "JWT" }
+        PAYLOAD = { "user": userCredentials.userID, "exp": currentTime + 3600 }
+        
+        TOKEN = base64Encode(HEADER) + "." + base64Encode(PAYLOAD)
+        SIGNATURE = hmacSHA256(TOKEN, secretKey)
+
+        RETURN TOKEN + "." + SIGNATURE
+    ELSE:
+        RETURN "Invalid credentials"
+
+DEFINE FUNCTION refreshToken(refreshToken):
+    IF validateRefreshToken(refreshToken):
+        NEW_TOKEN = generateJWT(refreshToken.userCredentials)
+        RETURN NEW_TOKEN
+    ELSE:
+        RETURN "Invalid or expired refresh token"
+
+Explicación:
+
+JWT Structure: Divide el token en HEADER, PAYLOAD y SIGNATURE.
+Firma del Token: Usa hmacSHA256 para firmar el token en lugar de encriptarlo.
+refreshToken Function: Añade un mecanismo de actualización de tokens para permitir que los usuarios mantengan la sesión iniciada de forma segura.
