@@ -1,0 +1,29 @@
+Orders Query
+
+* Tenemos que generar indices en OrderDetails.OrderID y OrderDetails.Quantity
+
+CREATE INDEX idx_cuantity ON OrderDetails(Quantity);
+CREATE INDEX idx_oirder_id ON OrderDetails(OrderID);
+
+la consulta modificada seria :
+
+SELECT Orders.OrderID, SUM(OrderDetails.Quantity * OrderDetails.UnitPrice) AS TotalPrice
+FROM Orders
+JOIN (
+    SELECT OrderID, Quantity, UnitPrice
+    FROM OrderDetails
+    WHERE Quantity > 10
+) AS OrderDetailsFiltered ON Orders.OrderID = OrderDetailsFiltered.OrderID
+GROUP BY Orders.OrderID;
+
+
+Customer Query
+
+* Tenemos que generar indices en City, si se necesita ordenar frecuentemente por CustomerName
+    se podria crear in índice compuesto entre City y CustomerName
+
+* la query queda igual
+
+CREATE INDEX idx_city ON Customers(City);
+CREATE INDEX idx_city_customername ON Customers(City, CustomerName);
+SELECT CustomerName FROM Customers WHERE City = 'London' ORDER BY CustomerName;

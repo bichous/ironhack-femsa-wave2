@@ -1,0 +1,20 @@
+User Posts Query:
+
+* tenemos que generar un indice para el atributo status , como estamos ordenando por likes,
+   tambien se podria crear un indice compuesto entre status y likes
+
+* la query quedaria sin modificacion
+
+db.posts.find({ status: "active" }, { title: 1, likes: 1 }).sort({ likes: -1 });
+
+
+
+User Data Aggregation
+
+* tenemos que generar un indice para el atributo status ,
+   tambien se podria crear un indice compuesto entre status y location
+
+db.users.aggregate([
+  { $match: { status: "active" } },
+  { $group: { _id: "$location", totalUsers: { $sum: 1 } } },
+]);
