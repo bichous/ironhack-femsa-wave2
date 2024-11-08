@@ -1,0 +1,42 @@
+Lab Instructions
+1. Review Simulated CI/CD Pipeline Configuration:
+-Build Stage:
+ Code Commit: Developers commit code to a version control system, triggering the CI pipeline.
+ Docker Image Creation: Dockerfiles define the environment and dependencies, and Docker builds an image which encapsulates the application and its runtime.
+// Beneficios:
+  Se puede automatizar los commits de codigo.
+  Ayuda a la deteccion de errores si se integran diferentes herramientas de analisis.
+  Facilita el deploy de la aplicacion en los diferentes entornos.
+// Desventajas:
+  Se requiere una area de devops o en su caso un conocimiento avanzado de contenerizacion de los developers.
+  Requiere varias configuraciones que pudieran ser complicadas para la mayoria de los developers.
+
+
+-Test Stage:
+Automated Testing: Docker images are used to spin up containers where automated tests are conducted, ensuring that the application behaves as expected in an environment identical to production.
+// Beneficios:
+  Al dejar las pruebas automatizadas, éstas se estaran ejecutando en todos los ambientes de manera identica, incluido el ambiente de producción.
+// Desventajas:
+  Al estar automatizadas las pruebas, si las pruebas son muy largas o muy complejas haran que el proceso de despliegue sea mas lento.
+
+
+-Deployment Stage:
+Container Registry: Successfully tested Docker images are tagged and pushed to a Docker registry.
+Orchestration and Deployment: Tools like Kubernetes or Docker Swarm manage the deployment of these images into containers across different environments, handling scaling and load balancing.
+// Beneficios:
+  Al dejar las pruebas automatizadas, éstas se estaran ejecutando en todos los ambientes de manera identica, incluido el ambiente de producción.
+  Se tiene centralizadas las imagenes por lo que la distribucion de dichas imagenes será mas sencilla.
+  Se puede tener un balanceo de carga mas eficiente.
+// Desventajas:
+  El registry se puede volver pesado y por lo tanto va a requerir que se le de mantenimiento constantemente.
+  Requiere conocimientos avanzados para la aplicación de las configuraciones necesarias.
+
+2. Analyze Enhancements and Potential Issues:
+-Enhancements: Consider how Docker’s containerization benefits the build, test, and deployment processes by providing consistency, portability, and scalability.
+-Potential Issues: Reflect on any possible challenges that might arise with Docker integration, such as security vulnerabilities in images, complexity in managing large numbers of services, or difficulties in orchestrating containers.
+//Beneficios:
+  Se tienen los diferentes ambientes de desarrollo identicos.
+  Se facilita el esacalado de las aplicaciones
+//Desventajas:
+  Se requieren conocimientos avanzados para la aplicacion de las configuraciones.
+
