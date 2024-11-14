@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: my_postgres_db
+    environment:
+      POSTGRES_DB: my_database
+      POSTGRES_USER: my_user
+      POSTGRES_PASSWORD: my_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack
+    environment:
+      SERVICES: "secretsmanager"  # Activamos el servicio de AWS Secrets Manager
+      DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+    ports:
+      - "4566:4566"  # Puerto para el endpoint principal de LocalStack
+    volumes:
+      - "./.localstack:/tmp/localstack"  # Volumen persistente para datos de LocalStack
+
+volumes:
+  pgdata:
+
+# Variables de entorno para PostgreSQL y LocalStack
+env_file:
+  - .env
