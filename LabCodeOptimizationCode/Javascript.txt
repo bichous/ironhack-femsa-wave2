@@ -1,0 +1,54 @@
+// Manipulación ineficiente del DOM y bucles excesivos
+function updateList(items) {
+    let list = document.getElementById("itemList");
+    list.innerHTML = "";
+
+    for (let i = 0; i < items.length; i++) {
+        let listItem = document.createElement("li");
+        listItem.innerHTML = items[i];
+        list.appendChild(listItem);
+    }
+}
+
+
+Análisis:
+
+Manipulación ineficiente del DOM:
+El código borra el contenido de la lista (list.innerHTML = "") antes de agregar cada elemento, lo que obliga al navegador a volver a renderizar la lista completa cada vez. Esto puede ser costoso cuando se manejan grandes cantidades de datos.
+
+Acceso repetido al DOM:
+Llamar a list.appendChild(listItem) en cada iteración provoca múltiples reflujo y repintado del DOM, lo que degrada el rendimiento.
+
+
+Enfoque de Optimización:
+
+Actualización por lotes del DOM:
+En lugar de actualizar el DOM en cada iteración del bucle, podemos crear todos los elementos de la lista en memoria y luego agregarlos al DOM en una sola operación.
+
+Usar DocumentFragment:
+Usar un DocumentFragment permite agregar elementos a un contenedor temporal en memoria y luego añadirlos al DOM en una sola operación, lo que es mucho más rápido.
+
+
+Código Optimizado:
+
+
+function updateList(items) {
+    let list = document.getElementById("itemList");
+    let fragment = document.createDocumentFragment();
+
+    for (let i = 0; i < items.length; i++) {
+        let listItem = document.createElement("li");
+        listItem.innerHTML = items[i];
+        fragment.appendChild(listItem);
+    }
+
+    list.innerHTML = ""; // Limpiar la lista una vez
+    list.appendChild(fragment); // Agregar todos los elementos en una sola operación
+}
+
+Explicación de la Optimización:
+
+Creamos un DocumentFragment para contener los elementos de la lista en memoria antes de agregarlos al DOM.
+Limpiamos el DOM solo una vez (list.innerHTML = ""), reduciendo las manipulaciones innecesarias del DOM.
+Esto reduce el costo de renderizado y mejora la velocidad de la operación.
+
