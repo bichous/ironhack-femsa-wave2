@@ -1,0 +1,15 @@
+Reflection Report:
+
+Desafíos enfrentados
+
+Definición de modelos de recursos: Fue un desafío equilibrar la simplicidad con los detalles al definir modelos como Order y Ticket. Se buscó incluir suficiente información para garantizar la funcionalidad del API sin complicarlo innecesariamente.
+Manejo de errores: Asegurar que todos los casos posibles de error fueran capturados requirió una evaluación cuidadosa de escenarios límite.
+Alineación con requisitos del negocio: Mapear los endpoints del API con las necesidades de negocio implicó iteraciones para garantizar que la solución fuera robusta.
+Aplicación de principios API First
+Colaboración: Utilizamos SwaggerHub para trabajar de manera colaborativa en la definición del API, lo que permitió recoger aportaciones de todas las partes interesadas.
+Diseño primero: El API fue completamente definido y documentado antes de iniciar cualquier implementación, permitiendo que los equipos de front-end y back-end trabajaran en paralelo.
+Estandarización: Nos adherimos a los principios RESTful y los estándares de OpenAPI para garantizar consistencia y facilidad de mantenimiento.
+Lecciones aprendidas
+La documentación clara mejora la usabilidad: Una documentación completa de los endpoints facilita su uso y acelera la incorporación de nuevos desarrolladores.
+El diseño iterativo es clave: Varias iteraciones en la definición de los endpoints permitieron refinar el API para que se alineara con los requisitos.
+Áreas de mejora: En el futuro, podríamos explorar GraphQL para consultas más dinámicas, como filtrar pedidos o tickets.
