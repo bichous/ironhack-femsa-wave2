@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+    id 'groovy'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    maven {
+        url "https://maven.google.com"
+    }
+    jcenter()
+}
+
+dependencies {
+    testImplementation 'org.codehaus.groovy:groovy-all:3.0.8'
+    testImplementation 'org.spockframework:spock-core:2.0-groovy-3.0'
+
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+}
+
+test {
+    useJUnitPlatform()
+}
