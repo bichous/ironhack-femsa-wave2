@@ -1,0 +1,19 @@
+Políticas Basadas en Roles:
+
+Rol para Administradores:
+
+Acceso completo a los servicios necesarios para configurar la infraestructura.
+Uso de una política administrada personalizada, con permisos solo sobre los recursos requeridos (e.g., S3
+solo para los buckets de la aplicación).
+Rol para Servidores de Aplicación:
+
+Acceso limitado a S3 (solo lectura o escritura según la necesidad).
+Permisos para enviar métricas a CloudWatch y escribir logs en S3.
+Rol para Desarrolladores:
+
+Permisos restringidos para gestionar instancias de prueba (Start/Stop EC2) y observar recursos sin acceso a modificar.
+Configuraciones de Seguridad:
+
+Activar MFA (Autenticación Multi-Factor) para accesos administrativos.
+Configurar políticas de rotación de credenciales en todos los usuarios de IAM.
+Implementar el principio de privilegio mínimo en cada rol.
