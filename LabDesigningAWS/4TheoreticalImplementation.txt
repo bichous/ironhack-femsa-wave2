@@ -1,0 +1,15 @@
+4. Implementación Teórica
+Flujo de Datos e Interacciones:
+
+Cliente -> ELB:
+
+Los usuarios acceden al sistema a través del Elastic Load Balancer, que distribuye las solicitudes hacia instancias EC2 en subredes privadas.
+EC2 -> S3:
+
+Las instancias EC2 interactúan con S3 para almacenar y recuperar archivos estáticos.
+VPC:
+
+Los servicios dentro de la VPC (EC2, base de datos) se comunican utilizando direcciones IP privadas.
+CloudWatch:
+
+Las métricas de las instancias EC2 se envían a CloudWatch para monitoreo y alertas.
