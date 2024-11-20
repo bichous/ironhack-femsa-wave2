@@ -1,0 +1,54 @@
+Descripción de los Microservicios Propuestos
+Utilizando los principios de diseño dirigido por el dominio (DDD), la aplicación monolítica de comercio electrónico se descompone en los siguientes microservicios:
+
+Servicio de Gestión de Usuarios
+
+Maneja perfiles de usuario, autenticación, autorización y preferencias.
+Administra sesiones de inicio de sesión.
+Se comunica con otros servicios para gestionar tokens de autorización.
+Servicio de Catálogo de Productos
+
+Mantiene descripciones de productos, precios, imágenes y niveles de inventario.
+Proporciona APIs para búsqueda y categorización de productos.
+Servicio de Procesamiento de Pedidos
+
+Gestiona carritos, colocación de pedidos, procesamiento de pagos e historial de pedidos.
+Coordina con los servicios de Usuarios y Catálogo para validar información.
+Servicio de Atención al Cliente
+
+Administra tickets de consultas, devoluciones, quejas y retroalimentación.
+Recupera datos de usuarios y pedidos a través de APIs de los servicios correspondientes.
+Comunicación entre Servicios
+Los servicios se comunican usando APIs RESTful o gRPC, dependiendo de los requisitos de rendimiento.
+Se utiliza comunicación asíncrona para operaciones no críticas a través de brokers de mensajes como Kafka o RabbitMQ.
+La autenticación está centralizada mediante OAuth 2.0 en el Servicio de Gestión de Usuarios.
+Estrategia de Almacenamiento de Datos
+Base de datos por servicio:
+Cada servicio gestiona su propia base de datos para garantizar encapsulamiento y reducir el acoplamiento. Los datos compartidos se sincronizan mediante APIs o eventos.
+Ejemplo:
+Gestión de Usuarios: Base de datos relacional (e.g., PostgreSQL).
+Catálogo de Productos: Base de datos NoSQL (e.g., MongoDB) para flexibilidad en atributos de productos.
+2. Plan de Migración
+Fase 1: Preparación
+Separar el Frontend del Backend:
+Migrar hacia una arquitectura frontend-backend para facilitar la integración futura con APIs.
+Configurar Pipelines CI/CD:
+Automatizar el despliegue para evitar interrupciones durante el proceso de migración.
+Fase 2: Pasos de Migración
+Comenzar con Servicios No Críticos (Bajo Riesgo):
+Migrar primero el Servicio de Catálogo de Productos, ya que es independiente de otros servicios.
+Configurar APIs para que el monolito consuma datos del catálogo durante la transición.
+Implementar Servicios Compartidos:
+Extraer el Servicio de Gestión de Usuarios para manejar autenticación y autorización de manera centralizada.
+Migrar Servicios Críticos de Forma Incremental:
+Transicionar el Servicio de Procesamiento de Pedidos e integrarlo con los servicios ya migrados.
+Migrar el Servicio de Atención al Cliente al Final:
+Transicionar el sistema de tickets, asegurándose de que pueda recuperar datos de los otros servicios.
+Fase 3: Migración de Datos
+Extraer Datos Específicos por Servicio:
+Usar vistas de bases de datos y scripts de migración para transferir datos relevantes a bases de datos específicas de cada servicio.
+Minimizar el Tiempo de Inactividad:
+Emplear una estrategia de despliegue azul-verde para la migración de datos.
+Fase 4: Monitoreo y Optimización
+Configurar herramientas de monitoreo (e.g., Prometheus, Grafana, ELK Stack) para observar el rendimiento.
+Probar la resiliencia de los servicios e identificar posibles cuellos de botella.
