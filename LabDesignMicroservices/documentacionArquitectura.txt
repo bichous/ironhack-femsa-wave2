@@ -1,0 +1,29 @@
+Diagrama:
+Frontend (React/Angular) 
+    |
+    v
+API Gateway 
+    |-----------------------|-----------------------|
+    v                       v                       v
+Gestión de Usuarios    Catálogo de Productos    Procesamiento de Pedidos
+Servicio               Servicio                 Servicio
+    v                       |                       |
+Autenticación         APIs de Búsqueda         APIs de Pago
+    v                       |                       v
+APIs de Atención al Cliente  Base de Inventario     Pasarela de Pagos
+
+
+  4. Informe 
+Desafíos:
+Definir los límites de los servicios: Fue complejo determinar la separación óptima entre los servicios, especialmente para datos compartidos como usuarios y pedidos.
+Gestión de la migración de datos: Transferir datos sin interrumpir el servicio requirió estrategias específicas como sincronización incremental.
+Interdependencias: Garantizar que cada microservicio pudiera operar de manera independiente mientras se mantenía la integridad del sistema fue un reto importante.
+Aplicación de los Principios de API First:
+Los servicios se diseñaron inicialmente a nivel de contrato (API) utilizando Swagger/OpenAPI, permitiendo un desarrollo desacoplado entre equipos.
+Se priorizó la claridad en la documentación para facilitar la integración de los servicios por parte de los equipos de frontend y backend.
+Lecciones Aprendidas:
+Una estrategia de migración bien planificada minimiza interrupciones y acelera la adopción de la arquitectura.
+Las pruebas continuas durante el proceso de transición son críticas para identificar problemas antes de que afecten a los usuarios finales.
+Mejoras Futuras:
+Implementar más pruebas automatizadas de integración entre microservicios.
+Explorar patrones avanzados de comunicación, como event sourcing y CQRS, para manejar datos compartidos de manera más eficiente.
