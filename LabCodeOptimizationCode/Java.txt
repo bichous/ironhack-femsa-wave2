@@ -1,0 +1,39 @@
+// Consultas de base de datos redundantes
+public class ProductLoader {
+
+    public List<Product> loadProducts() {
+        List<Product> products = new ArrayList<>();
+
+        for (int id = 1; id <= 100; id++) {
+            products.add(database.getProductById(id));
+        }
+
+        return products;
+    }
+}
+
+
+Análisis:
+
+Consultas de base de datos redundantes:
+El código consulta la base de datos 100 veces (una por cada producto), lo que puede ser ineficiente. Esto podría generar una carga excesiva en el servidor de base de datos y ralentizar el rendimiento.
+
+Enfoque de Optimización:
+
+Consultas por lotes:
+En lugar de consultar la base de datos para cada producto individualmente, podemos obtener todos los productos de una vez con una sola consulta a la base de datos, lo que reduce el número de viajes al servidor de base de datos.
+
+public class ProductLoader {
+
+    public List<Product> loadProducts() {
+        List<Product> products = database.getProductsByIds(Arrays.asList(1, 2, 3, ..., 100)); // Obtener todos los productos de una vez
+        return products;
+    }
+}
+
+
+
+Explicación de la Optimización:
+
+Reemplazamos el bucle con una sola consulta a la base de datos que obtiene todos los productos por sus identificadores de una vez.
+Esto reduce la carga de la base de datos, mejora la velocidad de recuperación de datos y reduce la sobrecarga de red.

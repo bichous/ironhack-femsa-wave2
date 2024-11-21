@@ -1,0 +1,21 @@
+5. Discusión y Evaluación
+Elección de Servicios:
+
+Resiliencia:
+
+El uso de Auto Scaling y ELB garantiza alta disponibilidad, permitiendo que la arquitectura se adapte a cambios en la demanda.
+Seguridad:
+
+IAM garantiza que cada recurso tenga acceso limitado solo a lo que necesita.
+La implementación de VPC con subredes privadas protege recursos sensibles.
+Políticas de IAM:
+
+Contribuyen significativamente a la seguridad mediante la segmentación de permisos.
+El principio de privilegio mínimo minimiza el riesgo de accesos no autorizados.
+Optimización de Recursos:
+
+La estrategia de autoescalado asegura un balance entre rendimiento y costos.
+Los presupuestos de AWS ofrecen control financiero al monitorear gastos y generar alertas.
+Lecciones Aprendidas y Mejoras Futuras:
+Automatización: Usar CloudFormation o Terraform para desplegar y gestionar la infraestructura de manera eficiente.
+Patrones Avanzados: Explorar el uso de servicios sin servidor como AWS Lambda para manejar eventos específicos, reduciendo aún más los costos.

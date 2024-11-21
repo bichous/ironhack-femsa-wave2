@@ -1,0 +1,103 @@
+Especificaciones del API
+
+Este documento define la especificación de la API para el sistema de comercio electrónico utilizando los estándares de Swagger/OpenAPI. El sistema incluye endpoints para la gestión de usuarios, el procesamiento de pedidos y las interacciones de servicio al cliente.
+1. Endpoints
+1.1 User Management
+Base URL: /users
+
+HTTP Method	Endpoint	Description	Parameters	Responses
+POST	/users	Create a new user account	Body: User object	201: User created
+400: Validation error
+GET	/users/{id}	Retrieve user information	Path: id (string, required)	200: User object
+404: User not found
+PUT	/users/{id}	Update user information	Path: id
+Body: User	200: User updated
+404: User not found
+DELETE	/users/{id}	Delete a user account	Path: id	204: User deleted
+404: User not found
+1.2 Order Processing
+Base URL: /orders
+
+HTTP Method	Endpoint	Description	Parameters	Responses
+POST	/orders	Place a new order	Body: Order object	201: Order created
+400: Validation error
+GET	/orders/{id}	Retrieve order details	Path: id (string, required)	200: Order object
+404: Order not found
+GET	/orders	List all user orders	Query: userId (optional)	200: List of orders
+1.3 Customer Service Interactions
+Base URL: /tickets
+
+HTTP Method	Endpoint	Description	Parameters	Responses
+POST	/tickets	Create a new support ticket	Body: Ticket object	201: Ticket created
+400: Validation error
+GET	/tickets/{id}	Retrieve ticket details	Path: id (string, required)	200: Ticket object
+404: Ticket not found
+2. Resource Models
+2.1 User
+
+User:
+  type: object
+  properties:
+    id:
+      type: string
+      description: Unique identifier for the user
+    name:
+      type: string
+      description: Full name of the user
+    email:
+      type: string
+      format: email
+      description: Email address of the user
+    password:
+      type: string
+      format: password
+      description: Encrypted password
+2.2 Order
+yaml
+Order:
+  type: object
+  properties:
+    id:
+      type: string
+      description: Unique identifier for the order
+    userId:
+      type: string
+      description: ID of the user placing the order
+    items:
+      type: array
+      items:
+        $ref: '#/components/schemas/Item'
+    totalPrice:
+      type: number
+      format: float
+      description: Total price of the order
+2.3 Ticket
+
+Ticket:
+  type: object
+  properties:
+    id:
+      type: string
+      description: Unique identifier for the ticket
+    userId:
+      type: string
+      description: ID of the user submitting the ticket
+    issue:
+      type: string
+      description: Description of the issue
+    status:
+      type: string
+      enum: [open, in_progress, closed]
+      description: Current status of the ticket
+3. Error Codes
+Error Code	Description
+400	Validation error
+401	Unauthorized
+403	Forbidden
+404	Resource not found
+500	Internal server error
+
+
+
+
+

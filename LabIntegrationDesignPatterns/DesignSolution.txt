@@ -1,0 +1,38 @@
+Design Solution Outline
+1. Global Configuration Management
+Descripción del Problema: El sistema requiere un objeto de configuración global al que puedan acceder todos los componentes de la aplicación. Este objeto debe ser único y evitar conflictos de acceso cuando varios componentes intentan modificar o consultar sus datos al mismo tiempo.
+
+Patrón Seleccionado: Singleton
+
+Justificación del Patrón: El patrón Singleton asegura que solo exista una instancia única del objeto de configuración en todo el sistema. Este patrón también permite controlar el acceso a dicha instancia, lo cual es ideal para evitar conflictos en entornos donde se puede acceder concurrentemente al objeto.
+
+Implementación: Se implementa una clase Singleton llamada GlobalConfig. Esta clase tiene un método estático para devolver la única instancia de la configuración y cuenta con un mecanismo de bloqueo para gestionar el acceso en aplicaciones concurrentes. Así, cada componente de la aplicación que necesita acceder a la configuración global utiliza este único punto de acceso seguro.
+
+2. Dynamic Object Creation Based on User Input
+Descripción del Problema: La interfaz de usuario necesita crear distintos elementos (botones, formularios, widgets) de manera dinámica, en función de las acciones del usuario. La aplicación debe permitir crear nuevos tipos de elementos sin modificar el código base, manteniendo una arquitectura extensible.
+
+Patrón Seleccionado: Factory
+
+Justificación del Patrón: El patrón Factory permite crear objetos en función de condiciones específicas o tipos sin que el código principal tenga que especificar la clase exacta de cada objeto. Esto facilita la adición de nuevos tipos de elementos de interfaz sin necesidad de modificar el código principal, promoviendo la extensibilidad.
+
+Implementación: Se crea una clase Factory que recibe el tipo de elemento que el usuario desea generar y devuelve la instancia adecuada (por ejemplo, un botón o un formulario). El Factory actúa como una fábrica centralizada para todos los componentes de la UI, simplificando la lógica de creación de objetos y mejorando la modularidad del código.
+
+3. State Change Notification Across System Components
+Descripción del Problema: Algunos componentes del sistema deben reaccionar a los cambios de estado en otras partes del sistema sin necesidad de depender directamente de estos componentes. Se necesita una forma de notificar estos cambios de estado de manera desacoplada y escalable.
+
+Patrón Seleccionado: Observer
+
+Justificación del Patrón: El patrón Observer permite que múltiples objetos (observadores) se suscriban a un objeto central (sujeto) y sean notificados de manera automática cuando ocurre un cambio de estado en el sujeto. Este patrón es ideal para mantener a los componentes independientes entre sí, ya que permite notificar cambios de estado sin crear dependencias rígidas.
+
+Implementación: Se implementa un “sujeto” que mantiene una lista de observadores suscritos. Cuando el estado del sujeto cambia, se llama a un método que recorre la lista de observadores y los notifica. Cada observador puede así actualizarse de manera automática, manteniendo el sistema desacoplado y facilitando la comunicación entre componentes.
+
+4. Efficient Management of Asynchronous Operations
+Descripción del Problema: La aplicación necesita realizar y coordinar múltiples operaciones asíncronas, como llamadas a APIs externas, sin bloquear el flujo principal. Es crucial asegurar que las tareas asíncronas se gestionen de forma ordenada y eficiente.
+
+Patrón Seleccionado: Modelos Asíncronos (Promises/Futures, Async-Await)
+
+Justificación del Patrón: Los modelos asíncronos, como Promises y Async-Await, son ideales para coordinar tareas que deben ejecutarse de forma no bloqueante, permitiendo realizar múltiples tareas en paralelo y mejorando el rendimiento de la aplicación. Estos patrones proporcionan una forma fácil de manejar y coordinar operaciones asincrónicas sin bloquear el flujo principal.
+
+Implementación: Se utiliza el modelo Async-Await para realizar las llamadas asíncronas. Cada operación asíncrona se maneja de manera independiente, permitiendo que el sistema continúe su flujo normal mientras espera los resultados de las llamadas externas. Esto mejora la capacidad de respuesta de la aplicación y facilita el control de errores y la sincronización de operaciones.
+
+Este documento describe las soluciones de diseño propuestas para cada uno de los desafíos identificados en el proyecto. Cada patrón de diseño fue seleccionado específicamente para abordar los problemas de una manera eficiente, permitiendo un sistema escalable y modular.

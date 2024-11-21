@@ -1,0 +1,14 @@
+3. Estrategia de Gestión de Recursos
+Auto Scaling:
+
+Configuración de un grupo de Auto Scaling para instancias EC2 con métricas personalizadas (CPU > 70% para escalar hacia arriba).
+Reducción automática basada en tiempos de baja demanda para ahorrar costos.
+Balanceo de Carga (ELB):
+
+Uso de un Elastic Load Balancer para distribuir el tráfico entrante entre las instancias EC2.
+Configuración para manejar certificados SSL, mejorando la seguridad.
+Optimización de Costos:
+
+AWS Budgets: Crear presupuestos y alarmas para monitorear costos.
+Instancias Reservadas: Usar instancias reservadas para cargas de trabajo consistentes.
+Configuración de Lifecycle Policies en S3 para mover objetos a almacenamiento Glacier cuando no se accedan frecuentemente.

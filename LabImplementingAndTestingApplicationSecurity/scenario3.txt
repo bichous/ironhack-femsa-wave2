@@ -1,0 +1,37 @@
+//Codigo Original
+PLAN secureDataCommunication:
+    IMPLEMENT SSL/TLS for all data in transit
+    USE encrypted storage solutions for data at rest
+    ENSURE all data exchanges comply with HTTPS protocols
+
+
+//Propuesta de solucion
+ Especifica la versión de TLS, implementa la gestión segura de claves, y asegura la validación de certificados para proteger tanto los datos en tránsito como en reposo.
+
+//Pseudocodigo propuesto
+
+ PLAN secureDataCommunication:
+    // Ensure all data in transit uses TLS 1.2 or higher
+    CONFIGURE SSL/TLS SETTINGS:
+        setTLSVersion("1.2 or higher")
+        enableCertificateValidation()
+        useStrongCipherSuites()
+
+    // Encrypted storage for data at rest
+    FUNCTION secureDataStorage(data):
+        ENCRYPTION_KEY = getEncryptionKeyFromKeyManagementService()
+        ENCRYPTED_DATA = encryptData(data, ENCRYPTION_KEY)
+        STORE encryptedData ENCRYPTED_DATA
+
+    // Validate HTTPS protocols
+    FUNCTION validateHttpsRequest(request):
+        IF request.protocol != "HTTPS" OR !isCertificateValid(request.certificate):
+            RETURN "Invalid or insecure connection"
+        ELSE:
+            PROCESS request
+
+
+    Explicacion
+    TLS Version: Configura TLS 1.2 o superior y activa la validación de certificados para prevenir ataques MITM.
+  secureDataStorage: Utiliza un servicio de gestión de claves para obtener claves de cifrado y asegurar el almacenamiento de datos.
+  validateHttpsRequest: Verifica que todas las conexiones sean seguras mediante HTTPS y que los certificados sean válidos.

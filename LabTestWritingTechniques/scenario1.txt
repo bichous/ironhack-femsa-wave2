@@ -1,0 +1,34 @@
+// TEST CASE: User Authentication with valid credentials
+// Explanation: Verifies that authentication succeeds with correct credentials.
+// Issue: Combined valid and invalid checks in a single test, making results unclear.
+TEST UserAuthentication_ValidCredentials
+    ASSERT_TRUE(authenticate("validUser", "validPass"), "Should succeed with correct credentials")
+END TEST
+
+// TEST CASE: User Authentication with an incorrect password
+// Explanation: Ensures that authentication fails when the password is incorrect for a valid user.
+// Issue: Originally tested valid and invalid cases together, which could hide failures in one scenario.
+TEST UserAuthentication_InvalidPassword
+    ASSERT_FALSE(authenticate("validUser", "wrongPass"), "Should fail with wrong credentials")
+END TEST
+
+// TEST CASE: User Authentication with an invalid username
+// Explanation: Checks if authentication fails when the username is invalid, covering an edge case.
+// Issue: Edge cases like invalid usernames were missing in the original test.
+TEST UserAuthentication_InvalidUsername
+    ASSERT_FALSE(authenticate("invalidUser", "validPass"), "Should fail with invalid username")
+END TEST
+
+// TEST CASE: User Authentication with empty credentials
+// Explanation: Verifies that empty username and password result in failed authentication.
+// Issue: Original test lacked cases for empty or null values.
+TEST UserAuthentication_EmptyCredentials
+    ASSERT_FALSE(authenticate("", ""), "Should fail with empty credentials")
+END TEST
+
+// TEST CASE: User Authentication with null credentials
+// Explanation: Ensures that null values for username and password lead to failed authentication.
+// Issue: Test was missing null value handling, a common edge case.
+TEST UserAuthentication_NullCredentials
+    ASSERT_FALSE(authenticate(null, null), "Should fail with null credentials")
+END TEST

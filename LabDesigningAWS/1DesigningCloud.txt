@@ -1,0 +1,20 @@
+
+1. Diseño de Infraestructura en la Nube
+Arquitectura Base:
+
+EC2 (Elastic Compute Cloud): Instancias para ejecutar la lógica de la aplicación.
+
+Tamaños seleccionados según el tráfico esperado (e.g., T3.medium para ambientes iniciales).
+Configuración en un grupo de Auto Scaling para responder automáticamente a cambios en la demanda.
+S3 (Simple Storage Service):
+
+Almacenamiento de objetos estáticos como imágenes, archivos, y backups de datos.
+Configuración para usar S3 como backend para almacenar logs de aplicaciones y datos no estructurados.
+VPC (Virtual Private Cloud):
+
+Red privada que conecta los servicios de manera segura.
+Componentes principales:
+Subred pública: Aloja Load Balancers (ELB).
+Subred privada: Aloja instancias EC2 y bases de datos.
+Gateway NAT: Permite que los recursos en subredes privadas accedan a internet sin exponerse directamente.
+Reglas estrictas en el Security Group para limitar acceso por IP y puertos específicos.

@@ -1,0 +1,25 @@
+//Query Original
+db.users.aggregate([
+  { $match: { status: "active" } },
+  { $group: { _id: "$location", totalUsers: { $sum: 1 } } }
+]);
+
+
+Problemas Potenciales:
+
+Si los campos status y location no están indexados, esta agregación requerirá más recursos y tiempo, especialmente con conjuntos de datos grandes.
+Consultas de agregación frecuentes en grandes conjuntos de datos sin la indexación adecuada pueden afectar el rendimiento.
+
+Sugerencias:
+
+Indexación: Añadir un índice compuesto en { status: 1, location: 1 } para mejorar el filtrado y la agrupación.
+Esquema del Documento: Considera mantener datos pre-agregados en una colección separada si se accede frecuentemente a los resúmenes por ubicación.
+
+db.users.createIndex({ status: 1, location: 1 });
+
+//Comentarios Adicionales de la practica y técnicas de optimización sugeridas:
+
+Indexación en SQL: Añadir índices en columnas involucradas en uniones, filtros y ordenación puede mejorar significativamente el rendimiento de las consultas.
+Indexación en NoSQL: En MongoDB, los índices compuestos en campos utilizados en $match y $sort ayudan a agilizar las consultas.
+Ajustes en el Esquema de Datos: En SQL y NoSQL, restructurar datos (por ejemplo, datos pre-agregados o uso de subdocumentos) puede optimizar la recuperación de datos, especialmente para consultas frecuentes.
+Consideración del Tamaño de Datos y Frecuencia de Consultas: Evaluar la frecuencia de ejecución de las consultas y el tamaño de los datos puede guiar la decisión de crear índices adicionales o ajustar los diseños de esquema.

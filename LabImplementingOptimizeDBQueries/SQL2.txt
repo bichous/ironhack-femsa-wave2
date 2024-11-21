@@ -1,0 +1,13 @@
+//Query original
+SELECT CustomerName FROM Customers WHERE City = 'London' ORDER BY CustomerName;
+
+Problemas Potenciales:
+
+La cláusula WHERE City = 'London' puede ser lenta si la columna City no tiene un índice, especialmente en una base de datos grande.
+Ordenar sin un índice en CustomerName puede agregar carga computacional.
+
+Mejoras sugeridas
+
+Indexación: Añadir índices en City y CustomerName para mejorar el filtrado y la ordenación.
+CREATE INDEX idx_customers_city ON Customers(City);
+CREATE INDEX idx_customers_customername ON Customers(CustomerName);
