@@ -1,0 +1,35 @@
+1. SQL Query Optimization
+-- Orders Query: Retrieve orders with many items and calculate the total price.
+SELECT Orders.OrderID, SUM(OrderDetails.Quantity * OrderDetails.UnitPrice) AS TotalPrice
+FROM Orders
+JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID
+WHERE OrderDetails.Quantity > 10
+GROUP BY Orders.OrderID;
+->Mejoras:
+Se requiere crear un indice para OrderDetails.Quantity y acelerar el proceso de filtrado 
+En caso de que sea posible utilizar un CTE
+
+-- Customer Query: Find all customers from London and sort by CustomerName.
+SELECT CustomerName FROM Customers WHERE City = 'London' ORDER BY CustomerName;
+->Mejoras:
+Crear un indice Customers.City para acelerar el filtrado
+Crear otro indice para CustomerName para acelerar el Order
+
+
+#########################################################################################
+2. NoSQL Query Implementation
+-- User Posts Query: Retrieve the most popular active posts and display their title and like count.
+db.posts
+  .find({ status: "active" }, { title: 1, likes: 1 })
+  .sort({ likes: -1 });
+->Mejoras:
+Crear indices en los campos "status" y "likes" para acelerar la consulta.db.posts
+
+-- User Data Aggregation: Summarize the number of active users by location.
+db.users.aggregate([
+  { $match: { status: "active" } },
+  { $group: { _id: "$location", totalUsers: { $sum: 1 } } },
+]);
+->Mejoras:
+Crear un índice en el campo "status" para acelerar la consulta.
+

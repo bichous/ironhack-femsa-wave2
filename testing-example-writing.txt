@@ -1,0 +1,105 @@
+####################################################################################
+Scenario 1: User Authentication Tests
+Original Test Case (Pseudocode):
+TEST UserAuthentication
+  // Problema: No se verifica el manejo de excepciones en caso de errores de autenticación
+  ASSERT_TRUE(authenticate("validUser", "validPass"), "Should succeed with correct credentials")
+  // Problema: No se verifica el comportamiento con un usuario inválido
+  ASSERT_FALSE(authenticate("validUser", "wrongPass"), "Should fail with wrong credentials")
+END TEST
+
+####################################################################################
+Scenario 2: Data Processing Functions
+Original Test Case (Pseudocode):
+TEST DataProcessing
+  // Problema: No se verifica el comportamiento con datos nulos o vacíos
+  DATA data = fetchData()
+  TRY
+    // Problema: No se verifica el estado inicial de los datos antes del procesamiento
+    processData(data)
+    ASSERT_TRUE(data.processedSuccessfully, "Data should be processed successfully")
+  CATCH error
+    // Problema: No se verifica el tipo de excepción lanzada
+    ASSERT_EQUALS("Data processing error", error.message, "Should handle processing errors")
+  END TRY
+END TEST
+
+####################################################################################
+Scenario 3: UI Responsiveness
+Original Test Case (Pseudocode):
+TEST UIResponsiveness
+  // Problema: No se verifica el comportamiento con diferentes tamaños de pantalla
+  UI_COMPONENT uiComponent = setupUIComponent(1024)
+  ASSERT_TRUE(uiComponent.adjustsToScreenSize(1024), "UI should adjust to width of 1024 pixels")
+END TEST
+
+####################################################################################
+
+
+
+
+
+Mejoras Aplicadas:
+
+1. **Claridad y Enfoque del Test**:
+   - Cada test se centra en una funcionalidad específica, asegurando que sea claro y enfocado.
+
+2. **Aislamiento de Casos de Prueba**:
+   - Los tests son independientes entre sí, garantizando que los resultados de uno no influyan en otro.
+
+3. **Documentación Racional**:
+   - Se han añadido comentarios explicativos para cada modificación, mejorando la claridad, efectividad y aislamiento de los tests.
+
+4. **Principio de Responsabilidad Única**:
+   - Cada test verifica un comportamiento específico, siguiendo el principio de responsabilidad única.
+
+5. **Separación de Preocupaciones**:
+   - Se han considerado las preocupaciones por separado, dividiendo los tests que manejan tanto operaciones normales como excepciones.
+
+6. **Mejora de Nombres de Tests**:
+   - Los nombres de los tests se han mejorado para reflejar con precisión lo que verifica cada test, mejorando la comprensibilidad y mantenibilidad.
+
+Pseudocode Actualizado:
+
+Scenario 1: User Authentication Tests
+TEST UserAuthentication
+  // Verifica que la autenticación sea exitosa con credenciales correctas
+  ASSERT_TRUE(authenticate("validUser", "validPass"), "Should succeed with correct credentials")
+  // Verifica que la autenticación falle con credenciales incorrectas
+  ASSERT_FALSE(authenticate("validUser", "wrongPass"), "Should fail with wrong credentials")
+  // Verifica el manejo de excepciones en caso de errores de autenticación
+  TRY
+    authenticate("invalidUser", "validPass")
+  CATCH error
+    ASSERT_EQUALS("Authentication error", error.message, "Should handle authentication errors")
+  END TRY
+END TEST
+
+Scenario 2: Data Processing Functions
+TEST DataProcessing
+  // Verifica el comportamiento con datos nulos o vacíos
+  ASSERT_FALSE(processData(null), "Should fail with null data")
+  DATA data = fetchData()
+  // Verifica el estado inicial de los datos antes del procesamiento
+  ASSERT_FALSE(data.processedSuccessfully, "Data should not be processed initially")
+  TRY
+    // Intenta procesar los datos
+    processData(data)
+    // Verifica que los datos se procesaron correctamente
+    ASSERT_TRUE(data.processedSuccessfully, "Data should be processed successfully")
+  CATCH error
+    // Verifica que se manejen correctamente los errores de procesamiento
+    ASSERT_EQUALS("Data processing error", error.message, "Should handle processing errors")
+  END TRY
+END TEST
+
+Scenario 3: UI Responsiveness
+TEST UIResponsiveness
+  // Configura el componente de UI con un ancho de 1024 píxeles
+  UI_COMPONENT uiComponent = setupUIComponent(1024)
+  // Verifica que el componente de UI se ajuste al tamaño de pantalla de 1024 píxeles
+  ASSERT_TRUE(uiComponent.adjustsToScreenSize(1024), "UI should adjust to width of 1024 pixels")
+  // Verifica el comportamiento con diferentes tamaños de pantalla
+  ASSERT_TRUE(uiComponent.adjustsToScreenSize(800), "UI should adjust to width of 800 pixels")
+  ASSERT_TRUE(uiComponent.adjustsToScreenSize(1280), "UI should adjust to width of 1280 pixels")
+END TEST

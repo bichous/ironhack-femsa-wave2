@@ -1,0 +1,64 @@
+Escenario 1: Pseudo-Código para el Sistema de Autenticación
+FUNCTION authenticateUser(username, password):
+  QUERY database WITH username AND password
+  IF found RETURN True
+  ELSE RETURN False
+
+Inyección SQL:  
+-Vulnerabilidad: El código no sanitiza las entradas.
+-Mejora: Utilizar declaraciones preparadas o consultas parametrizadas para prevenir la inyección SQL.
+
+Contraseñas en Texto Plano:  
+-Vulnerabilidad: Almacenar y consultar contraseñas en texto plano es inseguro.
+-Mejora: Almacenar contraseñas hasheadas usando un algoritmo de hashing.
+
+Ataques de Fuerza Bruta:  
+-Vulnerabilidad: La función no implementa ningún mecanismo de bloqueo de cuenta.
+-Mejora: Implementar bloqueo de cuenta después de un cierto número de intentos fallidos.
+
+
+
+##########################################################
+Escenario 2: Esquema de Autenticación JWT
+DEFINE FUNCTION generateJWT(userCredentials):
+  IF validateCredentials(userCredentials):
+    SET tokenExpiration = currentTime + 3600 // Token expires in one hour
+    RETURN encrypt(userCredentials + tokenExpiration, secretKey)
+  ELSE:
+    RETURN error
+
+
+Cifrado Débil:  
+-Vulnerabilidad: El método de cifrado no está especificado y puede ser débil.
+-Mejora: Utilizar un algoritmo de cifrado fuerte para firmar el JWT.
+
+Expiración del Token:  
+-Vulnerabilidad: Un tiempo de expiración fijo no debería aplicar para todos los casos.
+-Mejora: Permitir tiempos de expiración configurables y considerar un mecanismo de refresh de token.
+
+
+
+############################################################
+Escenario 3: Plan de Comunicación de Datos Seguros
+PLAN secureDataCommunication:
+  IMPLEMENT SSL/TLS for all data in transit
+  USE encrypted storage solutions for data at rest
+  ENSURE all data exchanges comply with HTTPS protocols
+
+
+Implementación de SSL/TLS:  
+-Vulnerabilidad: Una implementación incorrecta de SSL/TLS puede tener vulnerabilidades.
+-Mejora: Utilizar configuraciones fuertes de SSL/TLS.
+
+Almacenamiento Cifrado:  
+-Vulnerabilidad: No especificar el método de cifrado para datos en reposo.
+-Mejora: Utilizar algoritmos de cifrado fuertes.
+
+Cumplimiento de HTTPS:  
+-Vulnerabilidad: La comunicación por HTTPS no es suficiente.
+-Mejora: Implementar mecanismos de HSTS.
+
+
+
+
+
