@@ -1,0 +1,24 @@
+Pseudocódigo
+
+FUNCTION authenticateUser(username, password):
+  QUERY database WITH username AND password
+  IF found RETURN True
+  ELSE RETURN False
+
+
+Vulnerabilidades de seguridad:
+1. SQL Injection. Si la función que permite la consulta a la BD no maneja validaciones al recibir el username y el password se podría tener acceso no autorizado a la BD.
+2. Almacenamiento del password no cifrado/hasheado. Si el password está en texto plano se podría tener conocimiento de este dato si acceden a la BD.
+3. No existe alguna validación que limite el número de intentos en un período de tiempo.
+4. No existe el manejo de errores por lo que se podría mostrar información sensible de la BD.
+5. La consulta se hace de forma directa a la base de datos.
+
+Medidas de seguridad:
+1. El manejo de errores correcto. Mostrar mensajes de error genéricos evitando que se revelen detalles sensibles.
+2. Validación de las entradas (username y password).
+3. No almacenar contraseñas en texto plano, utilizando algoritmos de hashing seguros como bcrypt, scrypt o Argon2 (que incluyen el componente "salt").
+4. Implementar un sistema de autenticación de dos factores.
+5. Utilizar APIs de base de datos que manejen las entradas de manera segura, evitando la ejecución directa de comandos del sistema.
+6. Generar un procedimiento almacenado para la implementación de validación en base de datos para el usuario y password.
+7. Utilizar herramientas para realizar escaneos de seguridad automáticos sobre la aplicación en ejecución.
+8. Escaneo de tipo SAST para la validación de vulnerabilidades en el código.

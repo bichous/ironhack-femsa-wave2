@@ -1,0 +1,74 @@
+Esquema de diseño
+
+DEFINE FUNCTION generateJWT(userCredentials):
+  IF validateCredentials(userCredentials):
+    SET tokenExpiration = currentTime + 3600 // Token expires in one hour
+    RETURN encrypt(userCredentials + tokenExpiration, secretKey)
+  ELSE:
+    RETURN error
+
+Vulnerabilidades:
+1. No se indica el tiempo de vencimiento como uno de los elementos de la función encrypt, por lo que es indefinido su tiempo de uso.
+2. Al parecer el token se genera concatenando el userCredentials con el tokenExpiration, esto podría exponer datos sensibles. El JWT debe contener únicamente información necesaria.
+3. No se validan los datos recibidos (userCredentials)
+
+
+-------------- Diseño de autenticación JWT --------------
+
+/******* Función para generar el token JWT - Ini *******/
+DEFINE FUNCTION generateJWT(userCredentials):
+  IF validateCredentials(userCredentials):
+    SET tokenExpiration = currentTime + 3600  // El token expira en una hora
+    SET payloadToken = {
+      "user": userCredentials.username,
+      "expiresIn": tokenExpiration,
+      "iat": currentTime, // Hora actual en la que se solicite generar el token
+    }
+    SET token = encrypt(payloadToken, secretKey)  // Firmado y cifrado con la clave secreta (el valor podría estar almacenada en los secretos para no tenerlo en el código).
+                                                  // El cifrado podría realizarse con HMAC, SHA-256 o RSA.
+    RETURN token
+  ELSE:
+    RETURN error("Credenciales inválidas")
+/******* Función para generar el token JWT - Fin *******/
+
+/******* Función para verificar las credenciales del usuario - Ini *******/
+DEFINE FUNCTION validateCredentials(userCredentials):
+  SET userData = getUserFromDB(userCredentials.username)
+  IF userData == null:
+    RETURN false
+  IF verifyPassword(userData.password, userCredentials.password):
+    RETURN true
+  ELSE:
+    RETURN false
+/******* Función para verificar las credenciales del usuario - Fin *******/
+
+/******* Función para verificar la contraseña - Ini *******/
+DEFINE FUNCTION verifyPassword(storedPassword, tokenPassword):
+  IF hash(storedPassword) == hash(tokenPassword):  // Compara las contraseñas con hash (bcrypt)
+    RETURN true
+  ELSE:
+    RETURN false
+/******* Función para verificar la contraseña - Fin *******/
+
+/******* Función para validar un JWT - Ini *******/
+DEFINE FUNCTION validateJWT(token):
+  IF verifyToken(token)
+    SET decodedPayload = decrypt(token, secretKey)  // Descrifra el token
+    IF decodedPayload == null:
+      RETURN error("Token inválido")
+    IF currentTime > decodedPayload.expiresIn:
+      RETURN error("Token expirado")
+    IF currentTime < decodedPayload.iat:
+      RETURN error("Token emitido en el futuro")
+    RETURN decodedPayload  // El token es válido
+  ELSE:
+    RETURN error("Credenciales inválidas")
+/******* Función para validar un JWT - Fin *******/
+
+/******* Función para verificar un JWT - Ini *******/
+DEFINE FUNCTION verifyToken(token):
+  IF token == signToken(token):  // Verifica el token firmado (HMAC, SHA-256 o RSA).
+    RETURN true
+  ELSE:
+    RETURN false
+/******* Función para verificar un JWT - Fin *******/
